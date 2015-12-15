@@ -14,38 +14,77 @@ import java.util.Random;
 
 /* 
  * to-do: 
- * llegir de l'arxiu ca.dic les paraules
- * ignorar (o borrar de l'arxiu), de cada línia, a partir de /
+ * llegir d'un arxiu les paraules (per exemple, ca.dic)
  * al llegir-les, totes les lletres han de passar a minúscula
- * comprovar si s.matches("[a-zàèéòóíú·ç]")  es suficient.
  * 
  * */
 public class penjat {
-	public static String[] arrParaules = {"suficient", "ignorar", "menys", "estona", "llegir", "felicitats", "guanyat", "dibuix", "lletres", "penjat", "professor", "paraula", "cacatua", "murcielago", "llaminadura", "supercalifragilisticoexpialidoso", "jugar", "intents" }; // Falta llegir-ho del llistat ca.dic
-	public static String clean = clean(50);
+	public static String[] arrParaules = {"suficient", "ignorar", "menys", "estona", "llegir",
+										"felicitats", "guanyat", "dibuix", "lletres", "penjat", 
+										"professor", "paraula", "cacatua", "llaminadura", 
+										"supercalifragilisticoexpialidoso", "jugar", "intents" }; // Falta llegir-ho del llistat ca.dic o un altre
+	public static String[] arrIntents = {":)", 
+										"________", 
+										" |\n |\n |\n |\n_|______",
+										" _______\n |      \n |\n |\n |\n_|______",
+										" _______\n |/     \n |\n |\n |\n_|______",
+										" _______\n |/    |\n |\n |\n |\n_|______",
+										" _______\n |/    |\n |     0\n |\n |\n_|______",
+										" _______\n |/    |\n |     0\n |     |\n |\n_|______",
+										" _______\n |/    |\n |     0\n |    /|\\\n |\n_|______",
+										" _______\n |/    |\n |     0\n |    /|\\\n |    / \\\n_|______" }; // Possibilitat de llegir-ho d'arxiu ?
+	public static String lletresAcceptades = "[a-zàèéòóíúüïç'·]"; // per fer string.matches(lletresAcceptades); (retorna boolean) (utilitza expresions regulars)
+	public static String clean = clean(50); // Crea un string de n salts de linea
 	public static boolean trobada = false;
 	public static boolean win = false;
 	public static String paraulaGuions = "";
+	
 	public static void main (String args[]) {
-		//System.out.println(getParaula());
-		//System.out.println(dibuixParaula("paraula", "a".charAt(0)));
-		//for (int i=1; i<=9; i++)
-		//System.out.println(i+"\n"+dibuixIntents(i)+"\n");
 		jugar();
 	}
 	
 	public static void jugar() {
-		String paraula = getParaula();
+		String paraula;
 		int intents = 0; // Numero d'intents fallats
 		String lletresDites = ""; // lletres d'intents fallats
 		Scanner sc = new Scanner(System.in);
 		sc.useLocale(Locale.ENGLISH);
 		System.out.println(clean);
+		while(true) { 
+			System.out.println("Vols escriure una paraula o obtenir una aleatoria?");
+			System.out.println("1. Escriure paraula");
+			System.out.println("2. Obtenir paraula aleatoria");
+			System.out.print("Opcio [1/2]:");
+			String opcio = sc.nextLine();
+			if (opcio.equals("1")) {
+				System.out.println(clean);
+				System.out.println("Escriu la paraula que vulguis, en minúscula:\n");
+				paraula = sc.nextLine();
+				if (paraula.matches(lletresAcceptades+"+")) { // El més per indicar que la paraula ha de ser de 1 lletra o més (expresions regulars)
+					break;
+				}
+				else {
+					System.out.println(clean);
+					System.out.println("Error, has introduït un caràcter invàlid\n");
+					continue;
+				}
+					
+			} else if (opcio.equals("2")) {
+				paraula = getParaula(); // obtenim paraula aleatoriament 
+				break;
+			}
+			else {
+				System.out.println(clean);
+				System.out.println("Error, has de seleccionar 1 o 2...");
+				continue;
+			}
+		}
+		System.out.println(clean);
 		System.out.println(dibuixParaula(paraula, " ".charAt(0)));
 		System.out.print("\n\nEscriu una lletra: ");
 		String s = sc.nextLine();
 		while(true) {
-			if (s.matches("[a-zàèéòóíú·ç]")) { // lletres
+			if (s.matches(lletresAcceptades)) { // lletres
 				if (!lletresDites.contains(s)) { // Si encara no s'ha dit la lletra...
 					String str = dibuixParaula(paraula, s.charAt(0));
 					if (!trobada) {
@@ -53,8 +92,8 @@ public class penjat {
 						intents++;
 					}
 					System.out.println(clean); // Neteja la pantalla
-					if (intents<9) { // Mentre els intents siguin inferiors a 9...
-						System.out.println(dibuixIntents(intents)); 
+					if (intents<9) { // Mentre els intents siguin inferiors a 9... (nº d'intents máxim aquí)
+						System.out.println(arrIntents[intents]); 
 						System.out.println("\n"+lletresDites);
 						System.out.println("\n"+str);
 						if (win) { // Si ha guanyat...
@@ -63,8 +102,9 @@ public class penjat {
 						}
 					}
 					else {
-						System.out.println(dibuixIntents(intents)); 
+						System.out.println(arrIntents[intents]); 
 						System.out.println("\n\nHas perdut...");
+						System.out.println("La paraula era: " + paraula);
 						break;
 						
 					}
@@ -79,24 +119,9 @@ public class penjat {
 			System.out.print("\n\nEscriu una lletra: ");
 			s = sc.nextLine();
 		}
+		sc.close();
 	}
 	
-	
-	public static String dibuixIntents (int n) {
-		switch (n) {
-			case 0: return ":)";
-			case 1: return "________";
-			case 2: return " |\n |\n |\n |\n_|______";
-			case 3: return " _______\n |      \n |\n |\n |\n_|______";
-			case 4: return " _______\n |/     \n |\n |\n |\n_|______";
-			case 5: return " _______\n |/    |\n |\n |\n |\n_|______";
-			case 6: return " _______\n |/    |\n |     0\n |\n |\n_|______";
-			case 7: return " _______\n |/    |\n |     0\n |     |\n |\n_|______";
-			case 8: return " _______\n |/    |\n |     0\n |    /|\\\n |\n_|______";
-			case 9: return " _______\n |/    |\n |     0\n |    /|\\\n |    / \\\n_|______";
-			default: return "error d'intents";
-		}
-	}
 	public static String dibuixParaula (String paraula, char lletra) {
 		int l = paraula.length();
 		String str = "";
