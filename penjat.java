@@ -13,14 +13,15 @@ import java.util.Random;
 
 
 /* 
- * to-do: llegir de l'arxiu ca.dic les paraules
- * ignorar, de cada línia, a partir de /
+ * to-do: 
+ * llegir de l'arxiu ca.dic les paraules
+ * ignorar (o borrar de l'arxiu), de cada línia, a partir de /
  * al llegir-les, totes les lletres han de passar a minúscula
  * comprovar si s.matches("[a-zàèéòóíú·ç]")  es suficient.
  * 
  * */
 public class penjat {
-	public static String[] arrParaules = {"paraula", "cacatua", "murcielago", "llaminadura", "supercalifragilisticoexpialidoso"}; // Falta llegir-ho del llistat ca.dic
+	public static String[] arrParaules = {"suficient", "ignorar", "menys", "estona", "llegir", "felicitats", "guanyat", "dibuix", "lletres", "penjat", "professor", "paraula", "cacatua", "murcielago", "llaminadura", "supercalifragilisticoexpialidoso", "jugar", "intents" }; // Falta llegir-ho del llistat ca.dic
 	public static String clean = clean(50);
 	public static boolean trobada = false;
 	public static boolean win = false;
