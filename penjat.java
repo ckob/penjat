@@ -40,7 +40,12 @@ public class penjat {
 	public static String paraulaGuions = "";
 	
 	public static void main (String args[]) {
+		benvinguda();
 		jugar();
+	}
+
+	public static void benvinguda() {
+		System.out.println("Benvingut/da al joc del penjat!");
 	}
 	
 	public static void jugar() {
